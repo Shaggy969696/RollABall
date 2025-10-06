@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float movementY;
     public int count;
+    public float timeLeft = 60.0f;
     public TMP_Text countText;
     public TMP_Text winText;
+    public TMP_Text timerText;
     private AudioSource audioSource;
 
     private int totalPickUps;
@@ -57,11 +59,29 @@ public class PlayerController : MonoBehaviour
 
     void SetCountText()
     {
-        countText.text = "Puntos: " + count.ToString() + "/26";
+        countText.text = "Puntos: " + count.ToString() + "/" + totalPickUps;
         if (count >= totalPickUps)
         {
             winText.gameObject.SetActive(true);
         }
     }
 
+    void CountdownTimer()
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft -= Time.deltaTime;
+            timerText.text = "Tiempo: " + Mathf.CeilToInt(timeLeft).ToString(); //esa funcion la tuve que googlear.
+        }
+        else
+        {
+            winText.text = "PERDISTE";
+            winText.gameObject.SetActive(true);
+        }
+    }
+
+    void Update()
+    {
+        CountdownTimer();
+    }
 }
